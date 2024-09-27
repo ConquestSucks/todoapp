@@ -4,7 +4,7 @@ import Task from './task'
 class TaskStore {
     _tasks : Array<Task>
     constructor() {
-        this._tasks = [new Task()]
+        this._tasks = [new Task(), new Task(), new Task()]
         makeAutoObservable(this)
     }
     _subtasks = []

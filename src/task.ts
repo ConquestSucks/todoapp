@@ -8,8 +8,8 @@ export default class Task {
 
     constructor() {
         this._id = 0
-        this._name = 'name' 
-        this._description = 'description'
+        this._name = 'Задача' 
+        this._description = 'description1'
         this._childs = []
         makeAutoObservable(this)
     }
