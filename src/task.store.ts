@@ -1,20 +1,30 @@
 import { makeAutoObservable } from 'mobx'
-import Task from './task'
+import Task, { SubTask } from './task'
 
 class TaskStore {
-    _tasks : Array<Task>
+    tasks : Array<Task>
     constructor() {
-        this._tasks = [new Task(), new Task(), new Task()]
+        this.tasks = [
+            new Task({ id: 0, name: 'Задача 1', description: 'Текст 1',
+                childs: 
+                [ new SubTask({ id: 1, name: 'Задача 1.1', description:'Текст 1.1'}) ], 
+                selected: false }
+            ),
+            new Task({ id: 1, name: 'Задача 2', description: 'Текст 2',
+                childs: 
+                [ new SubTask({ id: 1, name: 'Задача 2.1', description:'Текст 2.1'}) ], 
+                selected: false }),
+        ]
         makeAutoObservable(this)
     }
-    _subtasks = []
+    subtasks = []
 
-    addTask = () => {
-        this._tasks.push(new Task())
-    }
+    /* addTask = () => {
+        this.tasks.push(new Task())
+    } */
     
     get getTasks() {
-        return this._tasks
+        return this.tasks
     }
 }
 

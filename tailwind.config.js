@@ -9,7 +9,14 @@ module.exports = {
         'lb' : '#F7FBFD',
         'grey': '#DCE0E1'
       },
+      width: {
+        '4.5': '18px'
+      },
+      height: {
+        '4.5': '18px'
+      },
       minWidth: {
+        '89.5' : '89.5%',
         'half': '50%'
       }
     },

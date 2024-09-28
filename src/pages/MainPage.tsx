@@ -1,11 +1,12 @@
-import Task from '../components/Task';
+import TaskItem from '../components/Task';
 import { taskStore } from "../task.store"
 
 export default function MainPage() {
     const tasks = taskStore.getTasks
     const displayTasks = tasks.map((t) => (
-      <Task
-       task={t} 
+      <TaskItem
+        key={t.id}
+        task={t} 
       />
     ));
 
