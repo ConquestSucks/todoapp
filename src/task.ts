@@ -27,7 +27,7 @@ export class SubTask {
     }
 }
 
-export default class Task {
+export class Task {
     id: number;
     name: string;
     description: string;

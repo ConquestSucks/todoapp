@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-import Task, { SubTask } from './task'
+import { Task, SubTask } from './task'
 
 class TaskStore {
     tasks : Array<Task>
