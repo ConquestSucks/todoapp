@@ -1,19 +1,23 @@
 /* import { makeAutoObservable, observable } from 'mobx' */
 
-interface SubTaskProps {
+/* interface SubTaskProps {
     id: number;
     name: string;
     description : string;
     selected?: boolean;
-}
+} */
 
-interface TaskProps extends SubTaskProps{
-    revealed?: boolean;
-    childs?: SubTask[]
-}
+/* interface TaskProps{
+    id: number;
+    name: string;
+    description: string;
+    selected: boolean;
+    revealed: boolean;
+    childs: Task[];
+} */
 
 
-export class SubTask {
+/* export class SubTask {
     id : number;
     name : string;
     description : string;
@@ -26,19 +30,21 @@ export class SubTask {
         this.selected = selected
     }
 }
-
-export class Task {
+ */
+export default class Task {
     id: number;
     name: string;
     description: string;
+    selected: boolean;
     revealed: boolean;
-    childs: SubTask[];
+    childs: Task[];
 
-    constructor({ id, name, description, childs = [], revealed = false} : TaskProps) {
+    constructor(id: number, name: string, description: string, childs: Task[] = []) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.revealed = revealed;
+        this.selected = false;
+        this.revealed = false;
         this.childs = childs
     }
 
@@ -46,7 +52,7 @@ export class Task {
         this.childs.push({ subTask: subTask, selected: false })
     } */
 
-    /* deleteSubTask = (id : Number) => {
-        this._childs
-    } */
+    deleteSubTask = (id : number) => {
+        this.childs.filter((st) => st.id !== id)
+    }
 }
