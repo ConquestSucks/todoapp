@@ -8,7 +8,7 @@ import { ReactComponent as Trash } from '../media/trash.svg'
 import { ReactComponent as Edit } from '../media/edit.svg'
 import TaskPopup from '../components/TaskPopup';
 
-function MainPage() {
+const MainPage = () => {
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [isPopupOpen, setIsPopUpOpen] = useState<boolean>(false);
 

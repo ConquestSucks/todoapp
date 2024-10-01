@@ -1,33 +1,25 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, autorun } from 'mobx';
 import Task from './task';
 
 class TaskStore {
-    tasks : Array<Task>;
+    tasks : Array<Task> = [];
     activeParentId : number = -1;
     isEditName : boolean = false;
     isEditDescription : boolean = false;
     
     constructor() {
-        this.tasks = [
-            new Task(0, 'Задача 1', 'Текст 1',
-                 
-                [ 
-                    new Task(1,'Задача 1.1','Текст 1.1',
-                        [
-                            new Task(5,'Задача 1.1.1','Текст 1.1.1',
-                                
-                            ),
-                        ]
-                    ),
-                    new Task(2,'Задача 1.2', 'Текст 1.2') ], 
-            ),
-            new Task(3, 'Задача 2', 'Текст 2',
-                 
-                [ new Task(4,'Задача 2.2', 'Текст 2.2') ], 
-            ),
-        ];
         makeAutoObservable(this);
-    }
+
+        const savedTasks = localStorage.getItem('tasks');
+
+        if(savedTasks) {
+            this.tasks = JSON.parse(savedTasks);
+        }
+
+        autorun(()=> {
+            localStorage.setItem('tasks', JSON.stringify(this.tasks))
+        })
+    }   
 
     findTaskById(id: number): Task | undefined {
         const searchTask = (taskList: Task[]): Task | undefined => {
