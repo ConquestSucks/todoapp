@@ -1,19 +1,18 @@
 import TaskComponent from '../components/Task';
+import { observer } from 'mobx-react-lite';
 import Task from '../task'
 import { taskStore } from "../task.store"
 import { useState } from 'react'
 import { ReactComponent as Trash } from '../media/trash.svg'
 
-export default function MainPage() {
+function MainPage() {
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [isPopupOpen, setIsPopUpOpen] = useState<boolean>(false);
 
-    const openPopup = () => setIsPopUpOpen(true)
-    const closePopup = () => setIsPopUpOpen(false)
+    const openPopup = () => setIsPopUpOpen(true);
+    const closePopup = () => setIsPopUpOpen(false);
 
-    const tasks = taskStore.getTasks
-
-    const displayTasks = tasks.map((t) => (
+    const displayTasks = taskStore.getTasks.map((t) => (
       <TaskComponent
         key={t.id}
         task={t} 
@@ -53,6 +52,10 @@ export default function MainPage() {
                         </span>
                         <span 
                             className='hover:text-orange-400 cursor-pointer hover:duration-300 duration-300'
+                            onClick={() => {
+                                taskStore.deleteSelectedTasks()
+                                closePopup()
+                            }}
                         >
                             Удалить выбранное
                         </span>
@@ -76,4 +79,6 @@ export default function MainPage() {
             </div>
         </div>
     );
-}
+};
+
+export default observer(MainPage);
