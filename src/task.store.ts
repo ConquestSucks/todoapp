@@ -7,6 +7,7 @@ class TaskStore {
     isEditName : boolean = false;
     isEditDescription : boolean = false;
     isDeletePopupOpen: boolean = false;
+    selectedTask: Task | null = null;
     
     constructor() {
         makeAutoObservable(this);
@@ -37,6 +38,14 @@ class TaskStore {
         };
 
         return searchTask(this.tasks);
+    }
+
+    setSelectedTask(task: Task | null) {
+        this.selectedTask = task;
+    }
+
+    get getSelectedTask() {
+        return this.selectedTask;
     }
 
     addTask(name: string, description: string) {
@@ -75,6 +84,24 @@ class TaskStore {
                 }));
         }
         this.tasks = filterTasks(this.tasks)
+    }
+
+    toggleEditField(field: 'name' | 'description') {
+        if (field === 'name') {
+            this.isEditName = !this.isEditName;
+        } else if (field === 'description') {
+            this.isEditDescription = !this.isEditDescription;
+        }
+    }
+
+    updateTaskField(field: 'name' | 'description', value: string) {
+        if (this.selectedTask) {
+            if (field === 'name') {
+                this.selectedTask.name = value;
+            } else if (field === 'description') {
+                this.selectedTask.description = value;
+            }
+        }
     }
 };
 

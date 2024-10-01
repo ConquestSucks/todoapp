@@ -1,23 +1,19 @@
 import TaskComponent from '../components/Task';
 import { observer } from 'mobx-react-lite';
-import Task from '../task'
 import { taskStore } from "../task.store"
 import { formStore } from '../form.store';
-import { useState } from 'react'
 import { ReactComponent as Trash } from '../media/trash.svg'
 import { ReactComponent as Edit } from '../media/edit.svg'
 import TaskPopup from '../components/TaskPopup';
 
 const MainPage = () => {
-    const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-
     const togglePopup = () => taskStore.isDeletePopupOpen = !taskStore.isDeletePopupOpen
 
     const displayTasks = taskStore.getTasks.map((t) => (
       <TaskComponent
         key={t.id}
         task={t} 
-        onSelectTask={setSelectedTask}
+        onSelectTask={taskStore.setSelectedTask.bind(taskStore)}
       />
     ));
 
@@ -31,7 +27,6 @@ const MainPage = () => {
                     <Trash 
                         className='border-2 rounded cursor-pointer'
                     />
-                    
                 </div>
                 {displayTasks}
                 <div className='p-2 flex items-center gap-3 w-fit border-2 rounded font-medium box-border cursor-pointer active:bg-lb hover:border-black'>
@@ -73,32 +68,27 @@ const MainPage = () => {
             )}
             <div className='min-w-half min-h-screen bg-grey'>
                 <div className='p-9'>
-                    {selectedTask ? (
+                    {taskStore.selectedTask ? (
                         <div className='w-fit flex flex-col items-start	text-lg font-normal gap-5'>
                             <div className='flex h-10 items-center gap-2'>
                                 <input 
-                                    value={selectedTask.name} 
+                                    value={taskStore.selectedTask.name} 
                                     disabled={!taskStore.isEditName} 
-                                    onChange={(e) => {
-                                        selectedTask.name = e.target.value
-                                    }}/>
-                                <Edit className='w-5 h-5 cursor-pointer' onClick={() => taskStore.isEditName = !taskStore.isEditName}/>
+                                    onChange={(e) => taskStore.updateTaskField('name', e.target.value)}
+                                />
+                                <Edit className='w-5 h-5 cursor-pointer' onClick={() => taskStore.toggleEditField('name')}/>
                             </div>
                             <div className='flex h-10 items-center gap-2'>
                                 <input 
-                                    value={selectedTask.description} 
+                                    value={taskStore.selectedTask.description} 
                                     disabled={!taskStore.isEditDescription}
-                                    onChange={(e) => {
-                                        selectedTask.description = e.target.value
-                                    }}
+                                    onChange={(e) => taskStore.updateTaskField('description', e.target.value)}
                                 />
-                                <Edit className='w-5 h-5 cursor-pointer' onClick={() => taskStore.isEditDescription = !taskStore.isEditDescription}/>
+                                <Edit className='w-5 h-5 cursor-pointer' onClick={() => taskStore.toggleEditField('description')}/>
                             </div>
                         </div>
                     ) : (
-                        <span>Выберите подзадачу для отображения информации
-                            {selectedTask}
-                        </span>
+                        <span>Выберите подзадачу для отображения информации</span>
                     )}
                 </div>
             </div>
