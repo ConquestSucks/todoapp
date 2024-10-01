@@ -10,10 +10,8 @@ import TaskPopup from '../components/TaskPopup';
 
 const MainPage = () => {
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-    const [isPopupOpen, setIsPopUpOpen] = useState<boolean>(false);
 
-    const openPopup = () => setIsPopUpOpen(true);
-    const closePopup = () => setIsPopUpOpen(false);
+    const togglePopup = () => taskStore.isDeletePopupOpen = !taskStore.isDeletePopupOpen
 
     const displayTasks = taskStore.getTasks.map((t) => (
       <TaskComponent
@@ -28,7 +26,7 @@ const MainPage = () => {
             <div className='p-9 flex flex-col gap-2'>
                 <div 
                     className='flex justify-end'
-                    onClick={openPopup}
+                    onClick={togglePopup}
                 >
                     <Trash 
                         className='border-2 rounded cursor-pointer'
@@ -45,14 +43,14 @@ const MainPage = () => {
                     </span>
                 </div>
             </div>
-            {isPopupOpen && (
+            {taskStore.isDeletePopupOpen && (
                 <div className="absolute h-full w-full flex items-center justify-center">
                     <div className='flex flex-col items-start border-2 border-black rounded p-2 bg-lb gap-2'>
                         <span 
                             className='hover:text-red-500 cursor-pointer hover:duration-300 duration-300'
                             onClick={() => {
                                 taskStore.deleteAllTasks()
-                                closePopup()
+                                togglePopup()
                             }}
                         >
                             Удалить все
@@ -61,12 +59,12 @@ const MainPage = () => {
                             className='hover:text-orange-400 cursor-pointer hover:duration-300 duration-300'
                             onClick={() => {
                                 taskStore.deleteSelectedTasks()
-                                closePopup()
+                                togglePopup()
                             }}
                         >
                             Удалить выбранное
                         </span>
-                        <span className='hover:text-grey cursor-pointer hover:duration-300 duration-300' onClick={closePopup}>Закрыть</span>
+                        <span className='hover:text-grey cursor-pointer hover:duration-300 duration-300' onClick={togglePopup}>Закрыть</span>
                     </div>
                 </div>
             )}

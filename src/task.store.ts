@@ -6,6 +6,7 @@ class TaskStore {
     activeParentId : number = -1;
     isEditName : boolean = false;
     isEditDescription : boolean = false;
+    isDeletePopupOpen: boolean = false;
     
     constructor() {
         makeAutoObservable(this);
