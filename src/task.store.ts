@@ -1,8 +1,11 @@
-import { makeAutoObservable } from 'mobx'
-import Task from './task'
+import { makeAutoObservable } from 'mobx';
+import Task from './task';
 
 class TaskStore {
-    tasks : Array<Task>
+    tasks : Array<Task>;
+    activeParentId : number = -1;
+    isEditName : boolean = false;
+    isEditDescription : boolean = false;
     
     constructor() {
         this.tasks = [
@@ -22,18 +25,38 @@ class TaskStore {
                  
                 [ new Task(4,'Задача 2.2', 'Текст 2.2') ], 
             ),
-        ]
-        makeAutoObservable(this)
+        ];
+        makeAutoObservable(this);
     }
 
-    subtasks = []
+    findTaskById(id: number): Task | undefined {
+        const searchTask = (taskList: Task[]): Task | undefined => {
+            for (const task of taskList) {
+                if (task.id === id) {
+                    return task;
+                }
+                const foundInChilds = searchTask(task.childs);
+                if (foundInChilds) {
+                    return foundInChilds;
+                }
+            }
+            return undefined;
+        };
 
-    /* addTask = () => {
-        this.tasks.push(new Task())
-    } */
+        return searchTask(this.tasks);
+    }
+
+    addTask(name: string, description: string) {
+        const parentTask = this.findTaskById(this.activeParentId);
+        if (this.activeParentId && parentTask) {
+            parentTask.childs.push(new Task(Math.random() * 5, name, description));
+        } else {
+            this.tasks.push(new Task(Math.random() * 5, name, description));
+        }
+    }
     
     get getTasks() {
-        return this.tasks
+        return this.tasks;
     }
 
     toggleTaskSelection(task: Task, selected: boolean) {

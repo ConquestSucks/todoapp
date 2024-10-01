@@ -1,3 +1,5 @@
+import { makeAutoObservable } from "mobx";
+
 export default class Task {
     id: number;
     name: string;
@@ -13,5 +15,7 @@ export default class Task {
         this.selected = false;
         this.revealed = false;
         this.childs = childs
+
+        makeAutoObservable(this)
     }
 }
