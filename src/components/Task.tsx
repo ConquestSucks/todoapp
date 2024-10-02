@@ -17,23 +17,31 @@ const TaskComponent: React.FC<TaskComponentProps> = observer(({ task, onSelectTa
         taskStore.toggleTaskSelection(task, e.target.checked)
     }
     return (
-        <div className='flex flex-col min-w-full min-h-10 max-w-fit text-left hover:bg-lb hover:duration-500 duration-500 rounded select-none'>
-            <div 
-                className='flex gap-2 p-2 cursor-pointer'
-                onClick={() => onSelectTask(task)}
+        <div className='flex flex-col gap-1 min-w-full min-h-10 max-w-fit text-left hover:bg-lb hover:duration-500 duration-500 rounded select-none rounded-md'>
+            <div
+                className='flex gap-2 p-2 justify-between
+                        cursor-pointer outline-none rounded-lg w-full hover:outline-custom duration-300 hover:text-custom
+                        gap-3 font-medium active:bg-lb select-none'
             >
-                <Arrow 
-                    className={`w-4 h-4 transform ${task.revealed ? 'rotate-90' : ''} duration-300`}
-                    onClick={toggleExpand}
-                />
-                <span className='text-base leading-5 font-medium'>{task.name}</span>
-                <input type='checkbox' className='w-4.5 h-4.5' checked={task.selected} onChange={handleCheckboxChange}></input>
+                <div className='flex gap-2 overflow-hidden'>
+                    <Arrow 
+                        className={`w-4 h-4 cursor-pointer transform ${task.revealed ? 'rotate-90' : ''} duration-300`}
+                        onClick={toggleExpand}
+                    />
+                    <span 
+                        className='text-base text-ellipsis max-h-5 leading-5 font-medium max-w-85 cursor-pointer'
+                        onClick={() => onSelectTask(task)}
+                    >
+                        {task.name}
+                    </span>
+                </div>
+                <input type='checkbox' className='max-w-10 max-h-5 cursor-pointer accent-custom' checked={task.selected} onChange={handleCheckboxChange}></input>
             </div>
             {task.revealed && (
                 <div className='flex flex-col text-sm gap-1'>
                     {task.childs.map((subTask) => (
                         <div 
-                            className='scale-95'
+                            className='pl-2'
                             key={subTask.id}
                         >
                             <TaskComponent
@@ -43,15 +51,16 @@ const TaskComponent: React.FC<TaskComponentProps> = observer(({ task, onSelectTa
                             />
                         </div>
                     ))}
-                    <div className='flex w-fit gap-3 border-2 py-1 px-2 rounded box-border cursor-pointer active:bg-lb hover:border-black'>
+                    <div 
+                        className='cursor-pointer outline-none p-2 rounded-lg w-full hover:outline-custom duration-300 hover:text-custom
+                            p-2 flex items-center gap-3 w-fit rounded font-medium active:bg-lb select-none'
+                        onClick={() => {
+                            formStore.isFormOpen = true
+                            taskStore.activeParentId = task.id
+                        }}
+                    >
                         <span>+</span>
-                        <span 
-                            className='font-medium'
-                            onClick={() => {
-                                formStore.isFormOpen = true
-                                taskStore.activeParentId = task.id
-                            }}
-                        >
+                        <span className='font-medium'>
                             Добавить подзадачу
                         </span>
                     </div>
