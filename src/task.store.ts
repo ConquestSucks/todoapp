@@ -72,6 +72,7 @@ class TaskStore {
 
     deleteAllTasks = () => {
         this.tasks = []
+        this.selectedTask = null
     }
 
     deleteSelectedTasks = () => {
@@ -84,6 +85,7 @@ class TaskStore {
                 }));
         }
         this.tasks = filterTasks(this.tasks)
+        this.selectedTask = null
     }
 
     toggleEditField(field: 'name' | 'description') {

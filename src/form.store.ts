@@ -1,8 +1,8 @@
 import { makeAutoObservable } from "mobx";
 
 class FormStore {
-    name: string = '';
-    description: string = '';
+    name: string = 'Новая задача';
+    description: string = 'Описание задачи';
     isFormOpen: boolean = false;
 
     constructor() {
@@ -17,9 +17,9 @@ class FormStore {
         this.description = value
     }
 
-    clearFrom() {
-        this.name = '';
-        this.description = '';
+    clearForm() {
+        this.name = 'Новая задача';
+        this.description = 'Описание задачи';
     }
 }
 
